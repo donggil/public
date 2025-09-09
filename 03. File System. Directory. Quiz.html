@@ -97,39 +97,54 @@
     <script>
         const questions = [
             {
-                question: "Which directory is the top-level directory in the filesystem hierarchy?",
-                options: ["/home", "/root", "/", "/etc"],
-                answer: 2
-            },
-            {
-                question: "Where are essential user commands like 'ls' and 'cp' stored?",
-                options: ["/usr/bin", "/sbin", "/bin", "/var"],
-                answer: 2
-            },
-            {
-                question: "Which directory contains system-wide configuration files?",
-                options: ["/dev", "/etc", "/tmp", "/lib"],
+                question: "Which directory contains essential user commands?",
+                options: ["/sbin", "/bin", "/etc", "/var"],
                 answer: 1
             },
             {
-                question: "What is the purpose of the '/home' directory?",
-                options: ["Stores temporary files", "Holds device files", "Contains user home directories", "Stores log files"],
+                question: "What is the purpose of the '/etc' directory?",
+                options: ["Stores temporary files", "Holds user home directories", "Contains system configuration files", "Stores shared libraries"],
                 answer: 2
             },
             {
-                question: "In which directory would you find log files?",
-                options: ["/var/log", "/proc", "/usr", "/opt"],
+                question: "Which directory is the home directory for the root user?",
+                options: ["/home/root", "/", "/root", "/user/root"],
+                answer: 2
+            },
+            {
+                question: "The '/dev' directory contains files that represent what?",
+                options: ["System logs", "Software applications", "Hardware devices", "User documents"],
+                answer: 2
+            },
+            {
+                question: "Which directory holds temporary files that are often cleared on reboot?",
+                options: ["/tmp", "/var", "/opt", "/usr"],
                 answer: 0
             },
             {
-                question: "The '/opt' directory is used for what purpose?",
-                options: ["Storing variable data", "Non-essential user commands", "Optional, third-party software packages", "Shared libraries"],
+                question: "Where would you find the home directories for regular users?",
+                options: ["/home", "/root", "/user", "/usr/home"],
+                answer: 0
+            },
+            {
+                question: "Which directory is used for storing system-wide essential binaries, typically for the superuser?",
+                options: ["/bin", "/usr/bin", "/sbin", "/lib"],
                 answer: 2
             },
             {
-                question: "What is the home directory for the 'root' superuser?",
-                options: ["/home", "/usr/root", "/", "/root"],
-                answer: 3
+                question: "What is the primary function of the '/var' directory?",
+                options: ["Stores variable data that changes frequently", "Contains optional software packages", "Holds user application binaries", "Houses shared libraries"],
+                answer: 0
+            },
+            {
+                question: "What does the '/' (root) directory represent?",
+                options: ["The home directory", "The parent directory", "The top of the file system hierarchy", "The temporary directory"],
+                answer: 2
+            },
+            {
+                question: "In which directory are most non-essential user commands and applications stored?",
+                options: ["/sbin", "/bin", "/usr/bin", "/etc"],
+                answer: 2
             }
         ];
 
