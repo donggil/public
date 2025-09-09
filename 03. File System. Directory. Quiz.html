@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unix Directory Quiz</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+        }
+        .container {
+            max-width: 640px;
+        }
+        .quiz-card {
+            background-color: #ffffff;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            padding: 2rem;
+            transition: all 0.3s ease-in-out;
+        }
+        .question-text {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 1.5rem;
+        }
+        .option-button {
+            width: 100%;
+            text-align: left;
+            padding: 1rem 1.5rem;
+            margin-bottom: 0.75rem;
+            border-radius: 0.75rem;
+            border: 1px solid #d1d5db;
+            background-color: #f9fafb;
+            color: #4b5563;
+            transition: all 0.2s ease-in-out;
+        }
+        .option-button:hover {
+            background-color: #e5e7eb;
+            transform: translateY(-2px);
+        }
+        .option-button.correct {
+            background-color: #10b981;
+            color: #ffffff;
+            border-color: #10b981;
+        }
+        .option-button.incorrect {
+            background-color: #ef4444;
+            color: #ffffff;
+            border-color: #ef4444;
+        }
+        .next-button {
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            background-color: #2563eb;
+            color: #ffffff;
+            font-weight: 600;
+            transition: background-color 0.2s;
+        }
+        .next-button:hover {
+            background-color: #1d4ed8;
+        }
+        .results-container {
+            text-align: center;
+        }
+        .results-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 1.5rem;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
+
+    <div class="container mx-auto quiz-card">
+        <div id="quiz-container">
+            <h1 class="text-3xl font-bold text-center mb-6 text-gray-800">Unix Directory Quiz</h1>
+            <p id="question-text" class="question-text"></p>
+            <div id="options-container" class="space-y-3"></div>
+            <div class="flex justify-end mt-6">
+                <button id="next-button" class="next-button hidden">Next</button>
+            </div>
+        </div>
+        <div id="results-container" class="results-container hidden">
+            <h2 class="results-text">Quiz Complete!</h2>
+            <p class="text-xl text-gray-700 mb-4">Your score is <span id="score"></span> out of <span id="total-questions"></span></p>
+            <button id="restart-button" class="next-button">Restart Quiz</button>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                question: "Which directory is the top-level directory in the filesystem hierarchy?",
+                options: ["/home", "/root", "/", "/etc"],
+                answer: 2
+            },
+            {
+                question: "Where are essential user commands like 'ls' and 'cp' stored?",
+                options: ["/usr/bin", "/sbin", "/bin", "/var"],
+                answer: 2
+            },
+            {
+                question: "Which directory contains system-wide configuration files?",
+                options: ["/dev", "/etc", "/tmp", "/lib"],
+                answer: 1
+            },
+            {
+                question: "What is the purpose of the '/home' directory?",
+                options: ["Stores temporary files", "Holds device files", "Contains user home directories", "Stores log files"],
+                answer: 2
+            },
+            {
+                question: "In which directory would you find log files?",
+                options: ["/var/log", "/proc", "/usr", "/opt"],
+                answer: 0
+            },
+            {
+                question: "The '/opt' directory is used for what purpose?",
+                options: ["Storing variable data", "Non-essential user commands", "Optional, third-party software packages", "Shared libraries"],
+                answer: 2
+            },
+            {
+                question: "What is the home directory for the 'root' superuser?",
+                options: ["/home", "/usr/root", "/", "/root"],
+                answer: 3
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+
+        const quizContainer = document.getElementById('quiz-container');
+        const resultsContainer = document.getElementById('results-container');
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const nextButton = document.getElementById('next-button');
+        const scoreSpan = document.getElementById('score');
+        const totalQuestionsSpan = document.getElementById('total-questions');
+        const restartButton = document.getElementById('restart-button');
+
+        function startQuiz() {
+            currentQuestionIndex = 0;
+            score = 0;
+            nextButton.classList.add('hidden');
+            quizContainer.classList.remove('hidden');
+            resultsContainer.classList.add('hidden');
+            displayQuestion();
+        }
+
+        function displayQuestion() {
+            const currentQuestion = questions[currentQuestionIndex];
+            questionText.textContent = `Question ${currentQuestionIndex + 1}: ${currentQuestion.question}`;
+            optionsContainer.innerHTML = '';
+            
+            currentQuestion.options.forEach((option, index) => {
+                const button = document.createElement('button');
+                button.textContent = option;
+                button.classList.add('option-button');
+                button.dataset.index = index;
+                button.onclick = () => selectOption(index, currentQuestion.answer);
+                optionsContainer.appendChild(button);
+            });
+        }
+
+        function selectOption(selectedIndex, correctAnswerIndex) {
+            const options = document.querySelectorAll('.option-button');
+            
+            if (selectedIndex === correctAnswerIndex) {
+                options[selectedIndex].classList.add('correct');
+                score++;
+            } else {
+                options[selectedIndex].classList.add('incorrect');
+                options[correctAnswerIndex].classList.add('correct');
+            }
+
+            options.forEach(button => {
+                button.disabled = true;
+            });
+
+            nextButton.classList.remove('hidden');
+        }
+
+        function showResults() {
+            quizContainer.classList.add('hidden');
+            resultsContainer.classList.remove('hidden');
+            scoreSpan.textContent = score;
+            totalQuestionsSpan.textContent = questions.length;
+        }
+
+        nextButton.onclick = () => {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < questions.length) {
+                displayQuestion();
+                nextButton.classList.add('hidden');
+            } else {
+                showResults();
+            }
+        };
+
+        restartButton.onclick = startQuiz;
+
+        // Initial setup
+        startQuiz();
+    </script>
+
+</body>
+</html>
